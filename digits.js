@@ -124,3 +124,65 @@ const digitMasks = [
     | 0
 ]
 
+class DigitDiv {
+    /* A class that wraps & represents a digit display box */
+    constructor() {
+        /* Initialize digit div, generate divs and generate
+         * an array of cells to light up to represent digits
+         */
+
+        this.outerContainer = document.createElement("div");
+        this.lightableCells = [];
+
+        this.outerContainer.classList.add("digit-box");
+
+        for (let rowNum = 0; rowNum < 5; rowNum++) {
+            let digRow = document.createElement("div");
+            digRow.classList.add("digit-row");
+            digRow.classList.add(`row-${rowNum}`);
+            digRow.classList.add(
+                (rowNum % 2 === 0) ? "height-low" : "height-high"
+            );
+
+            let cellNum;  // total cell count
+            for (let colNum = 0; colNum < 3; colNum++) {
+                let digCell = document.createElement("div");
+                digCell.classList.add("digit-cell");
+                digCell.classList.add(`col-${colNum}`);
+                digCell.classList.add(
+                    (colNum % 2 === 0) ? "width-low" : "width-high"
+                );
+
+                cellNum = (3 * rowNum) + colNum;
+                if (cellNum % 2 !== 0) {
+                    this.lightableCells.push(digCell);
+                }
+                digRow.appendChild(digCell);
+            }
+            this.outerContainer.appendChild(digRow);
+        }
+    }
+
+    getDiv() {
+        return this.outerContainer;
+    }
+
+    representDigit(digit) {
+        if (digit < 0 || digit > 9) {
+            throw new Error("Invalid digit");
+        }
+
+        for (let digitIdx = 0; digitIdx < 7; digitIdx++) {
+
+            if (((1 << digitIdx) & digitMasks[digit]) > 0) {  // This bar should light up
+                this.lightableCells[digitIdx].style.backgroundColor = "red";
+            }
+            else {
+                this.lightableCells[digitIdx].style.backgroundColor = "white";
+            }
+        }
+    }
+}
+
+// module.exports = DigitDiv;
+
