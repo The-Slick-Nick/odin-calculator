@@ -175,14 +175,90 @@ class DigitDiv {
         for (let digitIdx = 0; digitIdx < 7; digitIdx++) {
 
             if (((1 << digitIdx) & digitMasks[digit]) > 0) {  // This bar should light up
-                this.lightableCells[digitIdx].style.backgroundColor = "red";
+                this.lightableCells[digitIdx].classList.add("digit-lit");
             }
             else {
-                this.lightableCells[digitIdx].style.backgroundColor = "white";
+                this.lightableCells[digitIdx].classList.remove("digit-lit");
             }
         }
     }
+
+    clear() {
+        /* clear display, showing no digit whatsoever */
+        for (let digCell of this.lightableCells) {
+            digCell.classList.remove("digit-lit");
+        }
+    }
+
 }
 
+class DigitDisplay {
+    /* Represents a full-length digit display, managing individual DigitDiv objects
+     * For now, can ONLY represent positive numbers (but I will support this later) */
+
+    constructor(numDigits) {
+        if (+numDigits <= 0) {
+            throw new Error("DigitDisplay requires at least one digit");
+        }
+
+        this.maxNumber = (numDigits ** 10) - 1;
+        this.minNumber = 0;  // TODO: Support negative numbers
+
+        // low index - high digit. (left to right is high digit to low digit)
+        this.digits = [];
+        this.outerContainer = document.createElement("div");
+        this.outerContainer.classList.add("digit-display");
+
+
+        // note: I'm not a fan of directly setting the css here but perhaps it's best here?
+        this.outerContainer.style.display = "flex";
+        this.outerContainer.style["flex-flow"] = "row nowrap";
+
+
+        for (let i = 0; i < numDigits; i++) {
+            let newDigit = new DigitDiv();
+
+            this.digits.push(newDigit);
+            this.outerContainer.appendChild(newDigit.getDiv());
+        }
+    }
+
+    getDiv() {
+        return this.outerContainer;
+    }
+
+    representNumber(number) {
+        if (number < this.minNumber || number > this.maxNumber) {
+            throw new Error(
+                `This DigitDisplay can only represent ${this.minNumber} to ${this.maxNumber}. `
+                + `Got ${number}`
+            )
+        }
+
+        let factor = 0;
+        let digitDivIdx = this.digits.length - 1;
+        let digit;
+        for (let digitDivIdx = this.digits.length - 1; digitDivIdx >= 0; digitDivIdx--) {
+
+            if (number <= 0) {
+                this.digits[digitDivIdx].clear();
+                continue;
+            }
+
+            digit = (number % (10 ** (factor + 1))) / (10 ** factor);
+            this.digits[digitDivIdx].representDigit(digit);
+            number -= (10 ** factor) * digit;
+
+            factor++;
+        }
+    }
+
+    clear() {
+        /* clear the entire display */
+        for (digitDiv of this.digits) {
+            digitDiv.clear();
+        }
+    }
+}
 // module.exports = DigitDiv;
 
