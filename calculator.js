@@ -30,6 +30,7 @@ class Calculator {
     STATE_PARSING_OP1 = 0;
     STATE_PARSING_OP2 = 1;
     STATE_EQUALS_PRESSED = 2;
+    STATE_ERROR = 3;
 
     constructor(digitDisplay, keypad) {
 
@@ -45,12 +46,16 @@ class Calculator {
     }
 
     parseKey(keyPressed) {
+        /* Do calculator things based on what key was pressed */
 
         let digit = digits.indexOf(keyPressed);
         if (digit >= 0 && digit <= 9) {
             /* pressed a number */
 
-            if (Calculator.STATE_EQUALS_PRESSED === this.state)   {
+            if (
+                Calculator.STATE_EQUALS_PRESSED === this.state
+                || Calculator.STATE_ERROR === this.state
+            ) {
                 this.operand1 = 0;
                 this.state = STATE_PARSING_OP1;
             }
@@ -78,11 +83,18 @@ class Calculator {
                 this.operand1 = calculate(this.operand1, this.operator, this.operand2);
                 this.operand2 = 0;
             }
-            this.state = STATE_EQUALS_PRESSED;
+
             /* Note (to self) - must have this state to deal with the scenario
              * where a user enters a number directly after hitting enter,
              * beginning a new operand1 (rather than tacking onto existing)
              */
+
+            if (this.operand1 >= this.display.minNumber && this.operand2 <= this.display.maxNumber) {
+                this.state = STATE_EQUALS_PRESSED;
+            }
+            else {  // display does not support value
+                this.state = STATE_ERROR;
+            }
         }
         this.chooseDisplay();
     }
@@ -96,6 +108,9 @@ class Calculator {
                 break;
             case Calculator.STATE_PARSING_OP2:
                 this.display.representNumber(this.operand2);
+                break;
+            case Calculator.STATE_ERROR:
+                this.display.representWord("Err");
                 break;
         }
     }
