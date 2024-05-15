@@ -40,6 +40,8 @@ class Calculator {
         this.operand1 = 0; // some number
         this.operand2 = ; // another number
         this.operator; // single char, representing operation +-/*
+
+        this.chooseDisplay();
     }
 
     parseKey(keyPressed) {
@@ -55,44 +57,46 @@ class Calculator {
 
             if (Calculator.STATE_PARSING_OP1 === this.state) {
                 this.operand1 = (this.operand1 * 10) + digit;
-                this.display.representNumber(this.operand1);
             }
             else if (Calculator.STATE_PARSING_OP2 === this.state) {
                 this.operand2 = (this.operand2 * 10) + digit;
-                this.display.representNumber(this.operand2);
             }
 
         }
         else if (operators.includes(keyPressed)) {
             /* pressed an operator */
 
-            switch (this.state) {
-                case Calculator.STATE_PARSING_OP1:
-                case Calculator.STATE_EQUALS_PRESSED:
-                    this.operator = keyPressed;
-                    this.state = Calculator.STATE_PARSING_OP2;
-                    break;
-                case Calculator.STATE_PARSING_OP2:
-                    this.operand1 = calculate(this.operand1, this.operator, this.operand2);
-                    this.operator = keyPressed;
-                    break;
-                default:
-                    throw new Error("How did you get here?");
+            if (Calculator.STATE_PARSING_OP2 === this.state) {
+                this.operand1 = calculate(this.operand1, this.operator, this.operand2);
             }
+            this.operator = keyPressed;
             this.operand2 = 0;
-            this.display.representNumber(this.operand2);
+            this.state = Calculator.STATE_PARSING_OP2;
         }
         else if ('=' === keyPressed) {
             if (Calculator.STATE_PARSING_OP2 === this.state) {
                 this.operand1 = calculate(this.operand1, this.operator, this.operand2);
                 this.operand2 = 0;
             }
-            this.display.representNumber(this.operand1);
             this.state = STATE_EQUALS_PRESSED;
             /* Note (to self) - must have this state to deal with the scenario
-             * where a user enters a number directly after hitting enter
+             * where a user enters a number directly after hitting enter,
              * beginning a new operand1 (rather than tacking onto existing)
              */
+        }
+        this.chooseDisplay();
+    }
+
+    chooseDisplay() {
+        /* choose what to display based on state */
+        switch (this.state) {
+            case Calculator.STATE_PARSING_OP1:
+            case Calculator.STATE_EQUALS_PRESSED:
+                this.display.representNumber(this.operand1);
+                break;
+            case Calculator.STATE_PARSING_OP2:
+                this.display.representNumber(this.operand2);
+                break;
         }
     }
 
