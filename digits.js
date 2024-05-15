@@ -11,7 +11,9 @@ const BOTTOM_LEFT_VERTICAL_BIT = 1 << 4;
 const BOTTOM_RIGHT_VERTICAL_BIT = 1 << 5;
 const BOTTOM_HORIZONTAL_BIT = 1 << 6;
 
+/* bit representation of numeric values */
 const digitMasks = [
+
     // 0
     0
     | TOP_HORIZONTAL_BIT
@@ -124,6 +126,39 @@ const digitMasks = [
     | 0
 ]
 
+const charMasks = {
+    '0': digitMasks[0],
+    '1': digitMasks[1],
+    '2': digitMasks[2],
+    '3': digitMasks[3],
+    '4': digitMasks[4],
+    '5': digitMasks[5],
+    '6': digitMasks[6],
+    '7': digitMasks[7],
+    '8': digitMasks[8],
+    '9': digitMasks[9],
+    'E': 0
+        | TOP_HORIZONTAL_BIT
+        | TOP_LEFT_VERTICAL_BIT
+        // | TOP_RIGHT_VERTICAL_BIT
+        | MIDDLE_HORIZONTAL_BIT
+        | BOTTOM_LEFT_VERTICAL_BIT
+        // | BOTTOM_RIGHT_VERTICAL_BIT
+        | BOTTOM_HORIZONTAL_BIT
+        | 0,
+    'r': 0
+        // | TOP_HORIZONTAL_BIT
+        // | TOP_LEFT_VERTICAL_BIT
+        // | TOP_RIGHT_VERTICAL_BIT
+        | MIDDLE_HORIZONTAL_BIT
+        | BOTTOM_LEFT_VERTICAL_BIT
+        // | BOTTOM_RIGHT_VERTICAL_BIT
+        // | BOTTOM_HORIZONTAL_BIT
+        | 0
+}
+
+
+
 class DigitDiv {
     /* A class that wraps & represents a digit display box */
     constructor() {
@@ -183,6 +218,23 @@ class DigitDiv {
         }
     }
 
+    representChar(char) {
+        /* Represent the character at index idx of string text, if possible */
+
+        if (!char in charMasks) {
+            throw new Error(`No digit display representation for character ${char}`);
+        }
+
+        for (let digitIdx = 0; digitIdx < 7; digitIdx++) {
+            if (((1 << digitIdx) & charMasks[char]) > 0) {
+                this.lightableCells[digitIdx].classList.add("digit-lit");
+            }
+            else {
+                this.lightableCells[digitIdx].classList.remove("digit-lit");
+            }
+        }
+    }
+
     clear() {
         /* clear display, showing no digit whatsoever */
         for (let digCell of this.lightableCells) {
@@ -228,6 +280,11 @@ class DigitDisplay {
     }
 
     representNumber(number) {
+        if (isNaN(+number)) {
+            throw new Error(`Cannot represent ${number} as a number`);
+        }
+            
+        number = +number;
         if (number < this.minNumber || number > this.maxNumber) {
             throw new Error(
                 `This DigitDisplay can only represent ${this.minNumber} to ${this.maxNumber}. `
@@ -253,6 +310,28 @@ class DigitDisplay {
         }
     }
 
+    representWord(text) {
+        text = String(text);
+
+        if (text.length > this.digits.length) {
+            throw new Error(
+                `String representation of ${text} too long to display in `
+                + `${this.digits.length} digits.`
+            )
+        }
+
+        let textIdx = text.length - 1;
+        for (let digitIdx = this.digits.length - 1; digitIdx >= 0; digitIdx--) {
+
+            if (textIdx < 0) {
+                this.digits[digitIdx].clear();
+                continue;
+            }
+            this.digits[digitIdx].representChar(text[textIdx]);
+            textIdx--;
+        }
+    }
+
     clear() {
         /* clear the entire display */
         for (digitDiv of this.digits) {
@@ -260,5 +339,5 @@ class DigitDisplay {
         }
     }
 }
-// module.exports = DigitDiv;
 
+console.log("it's at least gotten here");

@@ -12,12 +12,12 @@ document.querySelector("body").appendChild(testDisplay.getDiv());
 
 async function demoDisplay() {
     for (let num = 0; num <= 100; num++) {
-        await sleep(100);
+        await sleep(10);
         testDisplay.representNumber(num);
     }
+    testDisplay.representWord("Err");
 } 
 
 
 demoDisplay();
-testDisplay.representNumber(999);
-
+// testDisplay.representNumber(999);
