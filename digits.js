@@ -283,7 +283,7 @@ class DigitDisplay {
         if (isNaN(+number)) {
             throw new Error(`Cannot represent ${number} as a number`);
         }
-            
+
         number = +number;
         if (number < this.minNumber || number > this.maxNumber) {
             throw new Error(
@@ -340,4 +340,3 @@ class DigitDisplay {
     }
 }
 
-console.log("it's at least gotten here");
