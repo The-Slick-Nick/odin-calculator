@@ -1,0 +1,14 @@
+{
+  "name": "odin-calculator",
+  "version": "1.0.0",
+  "description": "My take on the final project in the Foundations section of the Odin Project wherein I am tasked with creating a calculator.",
+  "main": "calculator.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC"
+}

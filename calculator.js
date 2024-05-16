@@ -39,7 +39,7 @@ class Calculator {
         this.state = STATE_PARSING_OP1;
 
         this.operand1 = 0; // some number
-        this.operand2 = ; // another number
+        this.operand2 = 0; // another number
         this.operator; // single char, representing operation +-/*
 
         this.chooseDisplay();
@@ -117,3 +117,6 @@ class Calculator {
 
 
 }
+
+
+module.exports = calculate;
