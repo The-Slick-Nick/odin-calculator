@@ -42,6 +42,13 @@ class Calculator {
         this.operand2 = 0; // another number
         this.operator; // single char, representing operation +-/*
 
+        // set up display area
+        // We only assign children here - style should be addressed via css
+        this.outerContainer = document.createElement("div");
+        this.outerContainer.classList.add("calculator");
+        this.outerContainer.appendChild(this.keypad.getDiv());
+        this.outerContainer.appendChild(this.keypad.getDiv());
+
         this.chooseDisplay();
     }
 
