@@ -3,12 +3,16 @@
  * This file/script is meant to run any/all DOM-generating javascript
  */
 
+
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 const testDisplay = new DigitDisplay(3);
-document.querySelector("body").appendChild(testDisplay.getDiv());
+const testKeypad = new Keypad();
+const testCalculator = new Calculator(testDisplay, testKeypad);
+
+document.querySelector("body").appendChild(testCalculator.getDiv());
 
 async function demoDisplay() {
     for (let num = 0; num <= 100; num++) {
@@ -18,6 +22,7 @@ async function demoDisplay() {
     testDisplay.representWord("Err");
 } 
 
+console.log(testKeypad.subscribers);
 
-demoDisplay();
+// demoDisplay();
 // testDisplay.representNumber(999);
