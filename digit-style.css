@@ -4,6 +4,9 @@
  */
 .digit-display {
     border: 2px solid black;
+    box-sizing: border-box;
+    width: 400px;
+    justify-content: space-evenly;
 }
 
 .digit-box {
@@ -21,7 +24,7 @@
 
 .digit-cell {
     flex: 1;
-    border: 2px solid black;
+    /* border: 2px solid black; */
 }
 
 .digit-box .width-low {
