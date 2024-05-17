@@ -101,18 +101,20 @@ class Calculator {
                 this.operand1 = calculate(this.operand1, this.operator, this.operand2);
                 this.operand2 = 0;
             }
-
+            this.state = STATE_EQUALS_PRESSED;
             /* Note (to this) - must have this state to deal with the scenario
              * where a user enters a number directly after hitting enter,
              * beginning a new operand1 (rather than tacking onto existing)
              */
-            if (this.operand1 >= this.display.minNumber && this.operand2 <= this.display.maxNumber) {
-                this.state = STATE_EQUALS_PRESSED;
-            }
-            else {  // display does not support value
-                this.state = STATE_ERROR;
-            }
         }
+        if (
+               this.operand1 < this.display.minNumber || this.operand1 > this.display.maxNumber
+            || this.operand2 < this.display.minNumber || this.operand2 > this.display.maxNumber
+        ) {
+            this.state = STATE_ERROR;
+        }
+
+        this.chooseDisplay();
     }
 
     chooseDisplay() {

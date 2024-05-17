@@ -253,7 +253,7 @@ class DigitDisplay {
             throw new Error("DigitDisplay requires at least one digit");
         }
 
-        this.maxNumber = (numDigits ** 10) - 1;
+        this.maxNumber = (10 ** numDigits) - 1;
         this.minNumber = 0;  // TODO: Support negative numbers
 
         // low index - high digit. (left to right is high digit to low digit)
