@@ -86,7 +86,7 @@ class Keypad {
             keyRow.forEach((keyChar) => {
                 let newButton = new KeypadButton(keyChar, (k) => this.emit(k));
                 if (largeKeys.includes(keyChar)) {
-                    newButton.getButton().classList.add("large-button");
+                    newButton.getButton().classList.add("wide-button");
                 }
                 else {
                     newButton.getButton().classList.add("small-button");
@@ -107,7 +107,7 @@ class Keypad {
             keyCol.forEach((keyChar) => {
                 let newButton = new KeypadButton(keyChar, (k) => this.emit(k));
                 if (largeKeys.includes(keyChar)) {
-                    newButton.getButton().classList.add("large-button");
+                    newButton.getButton().classList.add("tall-button");
                 }
                 else {
                     newButton.getButton().classList.add("small-button");

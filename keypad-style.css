@@ -6,35 +6,55 @@
 
 
 .keypad {
-    border: 2px solid black;
     display: flex;
+    flex-direction: row;
+    width: 400px;
+    height: 500px;
+}
+
+.keypad button {
+    padding: 10px;
+    box-sizing: border-box;
+    border: 0px;
+    /* margin: 2px; */
 }
 
 .keypad-section-rows {
+    flex: 1;
     display: flex;
     flex-flow: column nowrap;
 }
 
 .keypad-section-columns {
+    flex: 1;
     display: flex;
     flex-flow: row nowrap;
 }
 
 .keypad-button-row {
+    flex: 1;
     display: flex;
     flex-flow: row nowrap;
 }
 
 .keypad-button-column {
-
+    flex: 1;
     display: flex;
     flex-flow: column nowrap;
 }
 
-.large-button {
-    flex: 2;
+.small-button {
+    width: 100px;
+    height: 100px;
+    flex: 0 1 auto;
 }
 
-.small-button {
-    flex: 1;
+.wide-button {
+    width: 200px;
+    flex: 0 2 auto;
+}
+
+.tall-button {
+    height: 200px;
+    flex: 0 2 auto;
 }
