@@ -35,15 +35,14 @@ class Calculator {
  * the individual calculator components */
 
     constructor(digitDisplay, keypad) {
-        const self = this;
 
         this.display = digitDisplay;
         this.keypad = keypad;
 
         /* "plug in" to the keypad */
-        this.keypad.subscribe(this.parseKey);
+        this.keypad.subscribe((key) => this.parseKey(key));
 
-        self.state = STATE_PARSING_OP1;
+        this.state = STATE_PARSING_OP1;
 
         this.operand1 = 0; // some number
         this.operand2 = 0; // another number
@@ -56,19 +55,7 @@ class Calculator {
 
         this._outerContainer.appendChild(this.display.getDiv());
         this._outerContainer.appendChild(this.keypad.getDiv());
-
-        switch (self.state) {
-            case STATE_PARSING_OP1:
-            case STATE_EQUALS_PRESSED:
-                self.display.representNumber(self.operand1);
-                break;
-            case STATE_PARSING_OP2:
-                self.display.representNumber(self.operand2);
-                break;
-            case STATE_ERROR:
-                self.display.representWord("Err");
-                break;
-        }
+        this.chooseDisplay();
     }
 
     getDiv() {
@@ -84,17 +71,17 @@ class Calculator {
             /* pressed a number */
 
             if (
-                STATE_EQUALS_PRESSED === self.state
-                || STATE_ERROR === self.state
+                STATE_EQUALS_PRESSED === this.state
+                || STATE_ERROR === this.state
             ) {
                 this.operand1 = 0;
-                self.state = STATE_PARSING_OP1;
+                this.state = STATE_PARSING_OP1;
             }
 
-            if (STATE_PARSING_OP1 === self.state) {
+            if (STATE_PARSING_OP1 === this.state) {
                 this.operand1 = (this.operand1 * 10) + digit;
             }
-            else if (STATE_PARSING_OP2 === self.state) {
+            else if (STATE_PARSING_OP2 === this.state) {
                 this.operand2 = (this.operand2 * 10) + digit;
             }
 
@@ -102,45 +89,47 @@ class Calculator {
         else if (operators.includes(keyPressed)) {
             /* pressed an operator */
 
-            if (STATE_PARSING_OP2 === self.state) {
+            if (STATE_PARSING_OP2 === this.state) {
                 this.operand1 = calculate(this.operand1, this.operator, this.operand2);
             }
             this.operator = keyPressed;
             this.operand2 = 0;
-            self.state = STATE_PARSING_OP2;
+            this.state = STATE_PARSING_OP2;
         }
         else if ('=' === keyPressed) {
-            if (STATE_PARSING_OP2 === self.state) {
+            if (STATE_PARSING_OP2 === this.state) {
                 this.operand1 = calculate(this.operand1, this.operator, this.operand2);
                 this.operand2 = 0;
             }
 
-            /* Note (to self) - must have self.state to deal with the scenario
+            /* Note (to this) - must have this state to deal with the scenario
              * where a user enters a number directly after hitting enter,
              * beginning a new operand1 (rather than tacking onto existing)
              */
-
             if (this.operand1 >= this.display.minNumber && this.operand2 <= this.display.maxNumber) {
-                self.state = STATE_EQUALS_PRESSED;
+                this.state = STATE_EQUALS_PRESSED;
             }
             else {  // display does not support value
-                self.state = STATE_ERROR;
+                this.state = STATE_ERROR;
             }
         }
+        this.chooseDisplay();
+    }
 
-        switch (self.state) {
+    chooseDisplay() {
+        /* choose what to display based on current state */
+        switch (this.state) {
             case STATE_PARSING_OP1:
             case STATE_EQUALS_PRESSED:
-                self.display.representNumber(self.operand1);
+                this.display.representNumber(this.operand1);
                 break;
             case STATE_PARSING_OP2:
-                self.display.representNumber(self.operand2);
+                this.display.representNumber(this.operand2);
                 break;
             case STATE_ERROR:
-                self.display.representWord("Err");
+                this.display.representWord("Err");
                 break;
         }
     }
-
 }
 
