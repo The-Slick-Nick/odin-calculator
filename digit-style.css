@@ -1,0 +1,45 @@
+/* digit-style.css
+ *
+ * Stylesheet for details pertaining to the digital display on the calculator
+ */
+.digit-display {
+    border: 2px solid black;
+}
+
+.digit-box {
+    display: flex;
+    height: 200px;
+    width: 100px;
+    align-items: stretch;
+    flex-direction: column;
+}
+
+.digit-row {
+    display: flex;
+    align-items: stretch;
+}
+
+.digit-cell {
+    flex: 1;
+    border: 2px solid black;
+}
+
+.digit-box .width-low {
+    flex: 1;
+}
+
+.digit-box .width-high {
+    flex: 4;
+}
+
+.digit-box .height-low {
+    flex: 1;
+}
+
+.digit-box .height-high {
+    flex: 4
+}
+
+.digit-lit {
+    background-color: red;
+}

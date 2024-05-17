@@ -76,8 +76,8 @@ class Keypad {
         // all others are "small"
         let largeKeys = ["0", "+", "="];
 
-        let section1 = document.createElement("div");
-        section1.classList.add("keypad-section-rows");
+        let rowSection = document.createElement("div");
+        rowSection.classList.add("keypad-section-rows");
 
         blueprint1.forEach((keyRow) => {
             let newRow = document.createElement("div");
@@ -93,13 +93,13 @@ class Keypad {
                 }
                 newRow.appendChild(newButton.getButton());
             });
-            section1.appendChild(newRow);
+            rowSection.appendChild(newRow);
         });
-        this._outerContainer.appendChild(section1);
+        this._outerContainer.appendChild(rowSection);
 
 
-        let section2 = document.createElement("div");
-        section2.classList.add("keypad-section-columns");
+        let columnSection = document.createElement("div");
+        columnSection.classList.add("keypad-section-columns");
 
         blueprint2.forEach((keyCol) => {
             let newCol = document.createElement("div");
@@ -114,9 +114,9 @@ class Keypad {
                 }
                 newCol.appendChild(newButton.getButton());
             });
-            section2.appendChild(newCol);
+            columnSection.appendChild(newCol);
         });
-        this._outerContainer.appendChild(section2);
+        this._outerContainer.appendChild(columnSection);
 
         /* all_keys.forEach((keyChar) => {
             let newButton = new KeypadButton(

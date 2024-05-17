@@ -1,0 +1,40 @@
+/* keypad-style.css
+ *
+ * Stylesheet for details pertaining to the keypad on the calculator
+ */
+
+
+
+.keypad {
+    border: 2px solid black;
+    display: flex;
+}
+
+.keypad-section-rows {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.keypad-section-columns {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.keypad-button-row {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.keypad-button-column {
+
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.large-button {
+    flex: 2;
+}
+
+.small-button {
+    flex: 1;
+}
