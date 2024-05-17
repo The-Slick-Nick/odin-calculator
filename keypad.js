@@ -44,11 +44,9 @@ class Keypad {
         all_keys.forEach((keyChar) => {
             /* subscribe to each keypad button, forwarding output to this.emit */
             let newButton = new KeypadButton(
-                keyChar, (key) => {
-                    this.subscribers.forEach((subscriber) => {
-                        subscriber(key);
-                    });
-                });
+                keyChar,
+                (key) => this.emit(key)
+            );
             this._outerContainer.appendChild(newButton.getButton());
         });
 
@@ -58,17 +56,19 @@ class Keypad {
         /* Return the DOM div element that this class represents */
         return this._outerContainer;
     }
-/*
+
     emit(key) {
+        /* Emit a keypress code to all subscriber callbacks */
         this.subscribers.forEach((subscriber) => {
             subscriber(key);
         });
     }
-*/
+
     subscribe(callback) {
-        /* callback should be a function that accepts some "key" argument, expecting
-        * a single character
-        */
+        /* Add a callback to the subscriber list
+         *
+         * The callback should accept a single "char" argument
+         */
         this.subscribers.push(callback);
         console.log("Now we have subscribed");
     }

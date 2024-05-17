@@ -113,7 +113,6 @@ class Calculator {
                 this.state = STATE_ERROR;
             }
         }
-        this.chooseDisplay();
     }
 
     chooseDisplay() {
