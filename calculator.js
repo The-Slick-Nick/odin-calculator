@@ -111,6 +111,11 @@ class Calculator {
              * beginning a new operand1 (rather than tacking onto existing)
              */
         }
+        else if ('C' === keyPressed) {
+            this.operand1 = 0;
+            this.state = STATE_PARSING_OP1;
+        }
+
         if (
                this.operand1 < this.display.minNumber || this.operand1 > this.display.maxNumber
             || this.operand2 < this.display.minNumber || this.operand2 > this.display.maxNumber
