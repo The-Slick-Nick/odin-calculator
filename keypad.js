@@ -41,14 +41,90 @@ class Keypad {
 
         this.subscribers = [];
 
-        all_keys.forEach((keyChar) => {
-            /* subscribe to each keypad button, forwarding output to this.emit */
+
+        /* [C] [/]|[*] [-]
+         * [7] [8]|[9] [ ]
+         * [4] [5]|[6] [+]
+         * [1] [2]|[3] [ ]
+         * [  0  ]|[.] [=]
+         * -------|-------
+         * S1     |     S2
+         *
+         * note: we have to split this up weird - some buttons are two
+         * tall and some are two-wide. We split it up into two 5x2 sections,
+         * where the left one is split into rows, and the right is split into
+         * columns
+         */
+
+
+        // define 5 rows
+        let blueprint1 = [
+            ["C", "/"],
+            ["7", "8"],
+            ["4", "5"],
+            ["1", "2"],
+            ["0"]
+        ]
+
+        // define two columns
+        let blueprint2 = [
+            ["*", "9", "6", "3", "."],
+            ["-", "+", "="]
+        ];
+
+        // keys that are "large" on their primary dimension
+        // all others are "small"
+        let largeKeys = ["0", "+", "="];
+
+        let section1 = document.createElement("div");
+        section1.classList.add("keypad-section-rows");
+
+        blueprint1.forEach((keyRow) => {
+            let newRow = document.createElement("div");
+            newRow.classList.add("keypad-button-row");
+
+            keyRow.forEach((keyChar) => {
+                let newButton = new KeypadButton(keyChar, (k) => this.emit(k));
+                if (largeKeys.includes(keyChar)) {
+                    newButton.getButton().classList.add("large-button");
+                }
+                else {
+                    newButton.getButton().classList.add("small-button");
+                }
+                newRow.appendChild(newButton.getButton());
+            });
+            section1.appendChild(newRow);
+        });
+        this._outerContainer.appendChild(section1);
+
+
+        let section2 = document.createElement("div");
+        section2.classList.add("keypad-section-columns");
+
+        blueprint2.forEach((keyCol) => {
+            let newCol = document.createElement("div");
+            newCol.classList.add("keypad-button-column");
+            keyCol.forEach((keyChar) => {
+                let newButton = new KeypadButton(keyChar, (k) => this.emit(k));
+                if (largeKeys.includes(keyChar)) {
+                    newButton.getButton().classList.add("large-button");
+                }
+                else {
+                    newButton.getButton().classList.add("small-button");
+                }
+                newCol.appendChild(newButton.getButton());
+            });
+            section2.appendChild(newCol);
+        });
+        this._outerContainer.appendChild(section2);
+
+        /* all_keys.forEach((keyChar) => {
             let newButton = new KeypadButton(
                 keyChar,
                 (key) => this.emit(key)
             );
             this._outerContainer.appendChild(newButton.getButton());
-        });
+        }); */
 
     }
 
@@ -73,3 +149,4 @@ class Keypad {
         console.log("Now we have subscribed");
     }
 }
+
