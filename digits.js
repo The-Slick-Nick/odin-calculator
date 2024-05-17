@@ -292,8 +292,16 @@ class DigitDisplay {
             )
         }
 
+        // edge case - standard logic clears when number is 0
+        if (0 === number) {
+            this.digits[this.digits.length - 1].representDigit(0);
+            for (let digitDivIdx = this.digits.length - 2; digitDivIdx >= 0; digitDivIdx--) {
+                this.digits[digitDivIdx].clear();
+            }
+            return;
+        }
+
         let factor = 0;
-        let digitDivIdx = this.digits.length - 1;
         let digit;
         for (let digitDivIdx = this.digits.length - 1; digitDivIdx >= 0; digitDivIdx--) {
 
