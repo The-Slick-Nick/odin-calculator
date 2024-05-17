@@ -28,7 +28,8 @@ function calculate(operand1, operator, operand2) {
 STATE_PARSING_OP1 = 0;
 STATE_PARSING_OP2 = 1;
 STATE_EQUALS_PRESSED = 2;
-STATE_ERROR = 3;
+STATE_OPERATOR_PRESSED = 3;
+STATE_ERROR = 4;
 
 class Calculator {
 /* Class that handles the internal calculations and ties together
@@ -77,6 +78,9 @@ class Calculator {
                 this.operand1 = 0;
                 this.state = STATE_PARSING_OP1;
             }
+            else if (STATE_OPERATOR_PRESSED === this.state) {
+                this.state = STATE_PARSING_OP2;
+            }
 
             if (STATE_PARSING_OP1 === this.state) {
                 this.operand1 = (this.operand1 * 10) + digit;
@@ -94,7 +98,7 @@ class Calculator {
             }
             this.operator = keyPressed;
             this.operand2 = 0;
-            this.state = STATE_PARSING_OP2;
+            this.state = STATE_OPERATOR_PRESSED;
         }
         else if ('=' === keyPressed) {
             if (STATE_PARSING_OP2 === this.state) {
@@ -122,6 +126,7 @@ class Calculator {
         switch (this.state) {
             case STATE_PARSING_OP1:
             case STATE_EQUALS_PRESSED:
+            case STATE_OPERATOR_PRESSED:
                 this.display.representNumber(this.operand1);
                 break;
             case STATE_PARSING_OP2:
