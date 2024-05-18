@@ -180,10 +180,12 @@ class DecimalDiv {
         this._outerContainer.classList.add("decimal-box");
 
         this._decimalContainer = document.createElement("div");
+        this._decimalContainer.classList.add("decimal-wrapper");
 
         this._decimalLeft = document.createElement("div");
         this._decimalRight = document.createElement("div");
-
+        this._decimalLeft.classList.add("decimal-left");
+        this._decimalRight.classList.add("decimal-right");
 
         this._outerContainer.appendChild(this._decimalContainer);
         this._decimalContainer.appendChild(this._decimalLeft);
@@ -376,14 +378,14 @@ class DigitDisplay {
 
 
         for (let i = 0; i < numDigits; i++) {
-            let newDigit = new DigitDiv();
             let newDecimal = new DecimalDiv();
+            let newDigit = new DigitDiv();
 
-            this.digits.push(newDigit);
             this.decimals.push(newDecimal);
+            this.digits.push(newDigit);
 
-            this.outerContainer.appendChild(newDigit.getDiv());
             this.outerContainer.appendChild(newDecimal.getElem());
+            this.outerContainer.appendChild(newDigit.getDiv());
         }
     }
 

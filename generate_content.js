@@ -25,3 +25,4 @@ async function demoDisplay() {
 } 
 
 document.documentElement.style.setProperty("--num-digits", NUM_DIGITS_IN_DISPLAY);
+
