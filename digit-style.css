@@ -43,11 +43,6 @@
     flex: 4
 }
 
-.digit-lit {
-    background-color: red;
-    border-color: red;
-}
-
 .lightable-cell-vertical {
     display: flex;
     flex-direction: column;
@@ -59,11 +54,50 @@
 }
 
 .cell-end-left,
-.cell-middle-horizontal,
 .cell-end-right,
 .cell-end-top,
-.cell-middle-vertical,
 .cell-end-bottom {
-    flex: 1;
+    flex: 0;
+    background-color: transparent;
+}
+
+.cell-middle-horizontal,
+.cell-middle-vertical {
+    flex: 4;
+    background-color: transparent;
+}
+
+.digit-lit.cell-middle-horizontal,
+.digit-lit.cell-middle-vertical {
+    background-color: red;
+}
+
+.digit-lit.cell-end-left {
+    border-right: 10px solid red;
+    border-top: 10px solid transparent;
+    border-left: 0px solid transparent;
+    border-bottom: 10px solid transparent;
+}
+
+.digit-lit.cell-end-right {
+    border-right: 0px solid transparent;
+    border-top: 10px solid transparent;
+    border-left: 10px solid red;
+    border-bottom: 10px solid transparent;
+}
+
+.digit-lit.cell-end-top {
+    border-right: 10px solid transparent;
+    border-top: 0px solid transparent;
+    border-left: 10px solid transparent;
+    border-bottom: 10px solid red;
+}
+
+.digit-lit.cell-end-bottom {
+    border-right: 10px solid transparent;
+    border-top: 10px solid red;
+    border-left: 10px solid transparent;
+    border-bottom: 0px solid transparent;
+
 }
 
