@@ -168,6 +168,23 @@ const charMasks = {
 }
 
 
+function numSignificantNondecimalDigits(float) {
+    /* Identify the number of digits required to
+     * represent the number of integer digits in a number
+     * (left of the decimal point)
+     */
+    return 0;
+}
+
+function numSignificantDecimalDigits(float) {
+    /* Identify and return the number of digits required
+     * to represent the number of fractional digits in
+     * a number (right of the decimal point)
+     */
+    return 0;
+}
+
+
 class DecimalDiv {
     /* A class that wraps & represents a decimal point 
      * for the digit display
@@ -201,7 +218,7 @@ class DecimalDiv {
     }
 
     representDecimal() {
-        /* Method naming convention cnosen to match that of "DigitDiv", which came first */
+        /* Method naming convention chosen to match that of "DigitDiv", which came first */
         this._decimalLeft.classList.add("digit-lit");
         this._decimalRight.classList.add("digit-lit");
     }
@@ -406,6 +423,26 @@ class DigitDisplay {
             )
         }
 
+        let isNegative = false;
+        if (number < 0) {
+            isNegative = true;
+            number *= -1;
+        }
+
+        /* ------------------------------ */
+        /* CHECK FOR DECIMAL POINT        */
+
+        if (Math.floor(number) !== number) {
+            // how many significant digits?
+            // split into two portions - 
+            // nondecimal & decimal - to determine how many
+            // of the float's significant figures to represent
+        
+            // TODO: Write separate helper functions (in this file, but not under this class)
+            // to provide some of the functionality here - this way, I can unit test them
+        }
+        /* ------------------------------ */
+
         // edge case - standard logic clears when number is 0
         if (0 === number) {
             this.digits[this.digits.length - 1].representDigit(0);
@@ -415,11 +452,6 @@ class DigitDisplay {
             return;
         }
 
-        let isNegative = false;
-        if (number < 0) {
-            isNegative = true;
-            number *= -1;
-        }
 
         let factor = 0;
         let digit;
@@ -472,4 +504,12 @@ class DigitDisplay {
         }
     }
 }
+
+
+try {
+    module.exports = {
+        numSignificantNondecimalDigits,
+        numSignificantDecimalDigits
+    }
+} catch {}
 

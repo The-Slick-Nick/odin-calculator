@@ -1,5 +1,6 @@
 const calculate = require("../calculator.js");
 
+
 // Addition
 test("Adds integers", () => {
     expect(calculate(1, '+', 2)).toEqual(3);

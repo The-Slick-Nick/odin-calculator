@@ -153,3 +153,8 @@ class Calculator {
     }
 }
 
+// this makes the unit tests work
+try {
+    module.exports = calculate;
+} catch {}
+
