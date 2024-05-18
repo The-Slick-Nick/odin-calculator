@@ -10,6 +10,7 @@
 }
 
 .keypad {
+    flex: 0 1 auto;
     display: flex;
     flex-direction: row;
     width: var(--keypad-width);
