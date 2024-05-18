@@ -8,10 +8,12 @@
     --calculator-width: 400px;
 
     --digit-display-height: calc((1 / 8) * var(--calculator-height));
-    --digit-display-width: calc((3 / 4) * var(--calculator-width));
+    --digit-display-width: calc((5 / 6) * var(--calculator-width));
 
-    --keypad-height: calc((5 / 8) * var(--calculator-height));
-    --keypad-width: calc((3 / 4) * var(--calculator-width));
+    --keypad-width: calc((5 / 6) * var(--calculator-width));
+    --keypad-height: calc((5 / 4) * var(--keypad-width));
+
+    --calculator-border-size: calc(min(var(--calculator-height), var(--calculator-width)) / 25);
 }
 
 
@@ -25,4 +27,8 @@
     width: var(--calculator-width);
     height: var(--calculator-height);
     background-color: #00000033;
+
+    border-right: var(--calculator-border-size) solid #80808073;
+    border-bottom: var(--calculator-border-size) solid gray;
+
 }

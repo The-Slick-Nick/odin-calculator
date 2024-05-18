@@ -16,12 +16,14 @@
     --digit-height: calc(0.9 * var(--digit-display-height));
 
     --digit-border-size: calc(var(--digit-width) / 10);
+
+    --digit-color: #444445;
 }
 
 .digit-display {
     flex: 0 1 auto;
     border: 2px solid black;
-    background-color: #64786e;
+    background-color: #bcbeb0;
     box-sizing: border-box;
     width: var(--digit-display-width);
     height: var(--digit-display-height);
@@ -90,11 +92,11 @@
 
 .digit-lit.cell-middle-horizontal,
 .digit-lit.cell-middle-vertical {
-    background-color: red;
+    background-color: var(--digit-color);
 }
 
 .digit-lit.cell-end-left {
-    border-right: var(--digit-border-size) solid red;
+    border-right: var(--digit-border-size) solid var(--digit-color); 
     border-top: var(--digit-border-size) solid transparent;
     border-left: 0px solid transparent;
     border-bottom: var(--digit-border-size) solid transparent;
@@ -103,7 +105,7 @@
 .digit-lit.cell-end-right {
     border-right: 0px solid transparent;
     border-top: var(--digit-border-size) solid transparent;
-    border-left: var(--digit-border-size) solid red;
+    border-left: var(--digit-border-size) solid var(--digit-color);
     border-bottom: var(--digit-border-size) solid transparent;
 }
 
@@ -111,12 +113,12 @@
     border-right: var(--digit-border-size) solid transparent;
     border-top: 0px solid transparent;
     border-left: var(--digit-border-size) solid transparent;
-    border-bottom: var(--digit-border-size) solid red;
+    border-bottom: var(--digit-border-size) solid var(--digit-color);
 }
 
 .digit-lit.cell-end-bottom {
     border-right: var(--digit-border-size) solid transparent;
-    border-top: var(--digit-border-size) solid red;
+    border-top: var(--digit-border-size) solid var(--digit-color);
     border-left: var(--digit-border-size) solid transparent;
     border-bottom: 0px solid transparent;
 
