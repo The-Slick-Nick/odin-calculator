@@ -10,22 +10,33 @@ class KeypadButton {
      * :param: {function} callback
      */
     constructor(key, callback) {
-        this.callback = callback;
-        this.key = key;
+        this._callback = callback;
+        this._key = key;
 
         this.buttonElem = document.createElement("button");
         this.buttonElem.classList.add("keypad-button");
         this.buttonElem.textContent = key;
 
-        this.buttonElem.addEventListener(
-            "click", (event) => { this.callback(this.key); }
-        );
+        this.buttonElem.addEventListener( "click", (event) => this._callback(this._key) );
+
+        this.buttonElem.addEventListener("mousedown", (event) => {
+            this.buttonElem.classList.add("keypad-button-pressed");
+        });
+
+        this.buttonElem.addEventListener("mouseup", (event) => {
+            this.buttonElem.classList.remove("keypad-button-pressed");
+        });
+
+        this.buttonElem.addEventListener("mouseout", (event) => {
+            this.buttonElem.classList.remove("keypad-button-pressed");
+        });
     }
 
     getButton() {
         /* Return the DOM button element this class represents */
         return this.buttonElem;
     }
+
 }
 
 

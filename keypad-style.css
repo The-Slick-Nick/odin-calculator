@@ -46,6 +46,12 @@
     border-bottom: 10px solid #aaaaaa;
 }
 
+.keypad-button-pressed {
+    border-top: 10px solid #ffffff;
+    border-left: 10px solid #aaaaaa;
+}
+
+
 .small-button {
     width: var(--keypad-button-unit-width);
     height: var(--keypad-button-unit-height);
