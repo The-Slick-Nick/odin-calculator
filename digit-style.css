@@ -2,17 +2,34 @@
  *
  * Stylesheet for details pertaining to the digital display on the calculator
  */
+
+
+:root {
+    /* digit-specifics here.
+     * Inherit from --digit-display-height and --digit-display-width
+     */
+    --num-digits: 3; /* to be overwritten */
+
+    --padding-total: calc(0.1 * var(--digit-display-width));
+
+    --digit-width: calc(0.9 * var(--digit-display-width) / var(--num-digits));
+    --digit-height: var(--digit-display-height);
+
+    --digit-border-size: calc(var(--digit-width) / 10);
+}
+
 .digit-display {
     border: 2px solid black;
     box-sizing: border-box;
-    width: 400px;
+    width: var(--digit-display-width);
+    height: var(--digit-display-height);
     justify-content: space-evenly;
 }
 
 .digit-box {
     display: flex;
-    height: 200px;
-    width: 100px;
+    height: var(--digit-height);
+    width: var(--digit-width);
     align-items: stretch;
     flex-direction: column;
 }
@@ -24,7 +41,6 @@
 
 .digit-cell {
     flex: 1;
-    /* border: 2px solid black; */
 }
 
 .digit-box .width-low {
@@ -73,30 +89,30 @@
 }
 
 .digit-lit.cell-end-left {
-    border-right: 10px solid red;
-    border-top: 10px solid transparent;
+    border-right: var(--digit-border-size) solid red;
+    border-top: var(--digit-border-size) solid transparent;
     border-left: 0px solid transparent;
-    border-bottom: 10px solid transparent;
+    border-bottom: var(--digit-border-size) solid transparent;
 }
 
 .digit-lit.cell-end-right {
     border-right: 0px solid transparent;
-    border-top: 10px solid transparent;
-    border-left: 10px solid red;
-    border-bottom: 10px solid transparent;
+    border-top: var(--digit-border-size) solid transparent;
+    border-left: var(--digit-border-size) solid red;
+    border-bottom: var(--digit-border-size) solid transparent;
 }
 
 .digit-lit.cell-end-top {
-    border-right: 10px solid transparent;
+    border-right: var(--digit-border-size) solid transparent;
     border-top: 0px solid transparent;
-    border-left: 10px solid transparent;
-    border-bottom: 10px solid red;
+    border-left: var(--digit-border-size) solid transparent;
+    border-bottom: var(--digit-border-size) solid red;
 }
 
 .digit-lit.cell-end-bottom {
-    border-right: 10px solid transparent;
-    border-top: 10px solid red;
-    border-left: 10px solid transparent;
+    border-right: var(--digit-border-size) solid transparent;
+    border-top: var(--digit-border-size) solid red;
+    border-left: var(--digit-border-size) solid transparent;
     border-bottom: 0px solid transparent;
 
 }

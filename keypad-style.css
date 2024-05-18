@@ -3,19 +3,23 @@
  * Stylesheet for details pertaining to the keypad on the calculator
  */
 
+/* Using --keypad-width & --keypad-height from style.css */
+:root {
+    --keypad-button-unit-width: calc(var(--keypad-width) / 4);
+    --keypad-button-unit-height: calc(var(--keypad-height) / 5);
+}
 
 .keypad {
     display: flex;
     flex-direction: row;
-    width: 400px;
-    height: 500px;
+    width: var(--keypad-width);
+    height: var(--keypad-height);
 }
 
 .keypad button {
-    padding: 10px;
+    /* padding: 10px; */
     box-sizing: border-box;
     border: 0px;
-    /* margin: 2px; */
 }
 
 .keypad-section-rows {
@@ -43,17 +47,17 @@
 }
 
 .small-button {
-    width: 100px;
-    height: 100px;
+    width: var(--keypad-button-unit-width);
+    height: var(--keypad-button-unit-height);
     flex: 0 1 auto;
 }
 
 .wide-button {
-    width: 200px;
+    width: calc(2 * var(--keypad-button-unit-width));
     flex: 0 2 auto;
 }
 
 .tall-button {
-    height: 200px;
+    height: calc(2 * var(--keypad-button-unit-height));
     flex: 0 2 auto;
 }

@@ -2,13 +2,12 @@
  * 
  * This file/script is meant to run any/all DOM-generating javascript
  */
-
+let NUM_DIGITS_IN_DISPLAY = 5;
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
-
-const testDisplay = new DigitDisplay(3);
+const testDisplay = new DigitDisplay(NUM_DIGITS_IN_DISPLAY);
 const testKeypad = new Keypad();
 const testCalculator = new Calculator(testDisplay, testKeypad);
 
@@ -22,7 +21,4 @@ async function demoDisplay() {
     testDisplay.representWord("Err");
 } 
 
-console.log(testKeypad.subscribers);
-
-// demoDisplay();
-// testDisplay.representNumber(999);
+document.documentElement.style.setProperty("--num-digits", NUM_DIGITS_IN_DISPLAY);

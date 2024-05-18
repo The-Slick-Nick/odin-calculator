@@ -1,41 +1,14 @@
-.digit-display {
-    border: 2px solid black;
-}
+/* The "header" style.css file */
 
-.digit-box {
-    display: flex;
-    height: 200px;
-    width: 100px;
-    align-items: stretch;
-    flex-direction: column;
-}
 
-.digit-row {
-    display: flex;
-    align-items: stretch;
-}
+:root {
+    /* define an overall height & width, then set ratio */
 
-.digit-cell {
-    flex: 1;
-    border: 2px solid black;
-}
+    --calculator-height: 600px;
+    --calculator-width: 400px;
 
-.digit-box .width-low {
-    flex: 1;
-}
-
-.digit-box .width-high {
-    flex: 4;
-}
-
-.digit-box .height-low {
-    flex: 1;
-}
-
-.digit-box .height-high {
-    flex: 4
-}
-
-.digit-lit {
-    background-color: red;
+    --digit-display-height: calc((1 / 4) * var(--calculator-height));
+    --digit-display-width: var(--calculator-width);
+    --keypad-height: calc((3 / 4) * var(--calculator-height));
+    --keypad-width: var(--calculator-width);
 }
