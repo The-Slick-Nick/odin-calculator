@@ -115,6 +115,15 @@ class Calculator {
             this.operand1 = 0;
             this.state = STATE_PARSING_OP1;
         }
+        // maybe I'm beginning to need a switch here instead...
+        else if ('+/-' === keyPressed) {
+            if (STATE_PARSING_OP1 === this.state || STATE_EQUALS_PRESSED === this.state) {
+                this.operand1 *= -1;
+            }
+            else if (STATE_PARSING_OP2 === this.state) {
+                this.operand2 *= -1;
+            }
+        }
 
         if (
                this.operand1 < this.display.minNumber || this.operand1 > this.display.maxNumber

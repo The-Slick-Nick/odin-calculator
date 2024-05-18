@@ -168,6 +168,48 @@ const charMasks = {
 }
 
 
+class DecimalDiv {
+    /* A class that wraps & represents a decimal point 
+     * for the digit display
+     */
+
+    constructor() {
+
+        this._outerContainer = document.createElement("div");
+
+        this._outerContainer.classList.add("decimal-box");
+
+        this._decimalContainer = document.createElement("div");
+
+        this._decimalLeft = document.createElement("div");
+        this._decimalRight = document.createElement("div");
+
+
+        this._outerContainer.appendChild(this._decimalContainer);
+        this._decimalContainer.appendChild(this._decimalLeft);
+        this._decimalContainer.appendChild(this._decimalRight);
+
+        // outerContainer - flex columns
+        // decimalContainer - auto-martin top to force to bottom
+        // decimalLeft & decimalRight- use pointy-border trick to create a decimal point on 
+    }
+
+    getElem() {
+        return this._outerContainer;
+    }
+
+    representDecimal() {
+        /* Method naming convention cnosen to match that of "DigitDiv", which came first */
+        this._decimalLeft.classList.add("digit-lit");
+        this._decimalRight.classList.add("digit-lit");
+    }
+
+    clear() {
+        this._decimalLeft.classList.remove("digit-lit");
+        this._decimalRight.classList.remove("digit-lit");
+    }
+}
+
 class DigitDiv {
     /* A class that wraps & represents a digit display box */
     constructor() {
@@ -240,8 +282,6 @@ class DigitDiv {
 
                         this.lightableCells.push([leftEnd, middle, rightEnd]);
                     }
-
-                    // this.lightableCells.push(digCell);
                 }
 
                 digRow.appendChild(digCell);
@@ -324,6 +364,8 @@ class DigitDisplay {
 
         // low index - high digit. (left to right is high digit to low digit)
         this.digits = [];
+        this.decimals = [];
+
         this.outerContainer = document.createElement("div");
         this.outerContainer.classList.add("digit-display");
 
@@ -335,9 +377,13 @@ class DigitDisplay {
 
         for (let i = 0; i < numDigits; i++) {
             let newDigit = new DigitDiv();
+            let newDecimal = new DecimalDiv();
 
             this.digits.push(newDigit);
+            this.decimals.push(newDecimal);
+
             this.outerContainer.appendChild(newDigit.getDiv());
+            this.outerContainer.appendChild(newDecimal.getElem());
         }
     }
 

@@ -86,8 +86,8 @@ class Keypad {
         this._keys = {};
 
         /* [C] [/]|[*] [-]
-         * [7] [8]|[9] [ ]
-         * [4] [5]|[6] [+]
+         * [7] [8]|[9] [+]
+         * [4] [5]|[6] [+-]
          * [1] [2]|[3] [ ]
          * [  0  ]|[.] [=]
          * -------|-------
@@ -100,7 +100,7 @@ class Keypad {
          */
 
 
-        // define 5 rows
+        // define five rows
         let blueprint1 = [
             ["C", "/"],
             ["7", "8"],
@@ -112,12 +112,12 @@ class Keypad {
         // define two columns
         let blueprint2 = [
             ["*", "9", "6", "3", "."],
-            ["-", "+", "="]
+            ["-", "+", "+/-", "="]
         ];
 
         // keys that are "large" on their primary dimension
         // all others are "small"
-        let largeKeys = ["0", "+", "="];
+        let largeKeys = ["0", "="];
 
         let rowSection = document.createElement("div");
         rowSection.classList.add("keypad-section-rows");
@@ -149,6 +149,7 @@ class Keypad {
         blueprint2.forEach((keyCol) => {
             let newCol = document.createElement("div");
             newCol.classList.add("keypad-button-column");
+
             keyCol.forEach((keyChar) => {
                 let newButton = new KeypadButton(keyChar, (k) => this.emit(k));
                 if (largeKeys.includes(keyChar)) {
