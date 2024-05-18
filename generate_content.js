@@ -2,7 +2,7 @@
  * 
  * This file/script is meant to run any/all DOM-generating javascript
  */
-let NUM_DIGITS_IN_DISPLAY = 5;
+let NUM_DIGITS_IN_DISPLAY = 8;
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));

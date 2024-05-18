@@ -7,8 +7,8 @@
     --calculator-height: 600px;
     --calculator-width: 400px;
 
-    --digit-display-height: calc((1 / 4) * var(--calculator-height));
+    --digit-display-height: calc((1 / 6) * var(--calculator-height));
     --digit-display-width: var(--calculator-width);
-    --keypad-height: calc((3 / 4) * var(--calculator-height));
+    --keypad-height: calc((5 / 6) * var(--calculator-height));
     --keypad-width: var(--calculator-width);
 }

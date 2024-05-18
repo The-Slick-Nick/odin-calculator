@@ -20,6 +20,7 @@
 
 .digit-display {
     border: 2px solid black;
+    background-color: #64786e;
     box-sizing: border-box;
     width: var(--digit-display-width);
     height: var(--digit-display-height);

@@ -16,12 +16,6 @@
     height: var(--keypad-height);
 }
 
-.keypad button {
-    /* padding: 10px; */
-    box-sizing: border-box;
-    border: 0px;
-}
-
 .keypad-section-rows {
     flex: 1;
     display: flex;
@@ -44,6 +38,11 @@
     flex: 1;
     display: flex;
     flex-flow: column nowrap;
+}
+
+.keypad-button {
+    border-right: 10px solid #ffffff;
+    border-bottom: 10px solid #aaaaaa;
 }
 
 .small-button {
