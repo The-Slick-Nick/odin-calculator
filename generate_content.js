@@ -26,3 +26,8 @@ async function demoDisplay() {
 
 document.documentElement.style.setProperty("--num-digits", NUM_DIGITS_IN_DISPLAY);
 
+
+for (let i = 0; i < testDisplay.decimals.length / 2; i++) {
+    testDisplay.decimals[i].representDecimal();
+}
+    
