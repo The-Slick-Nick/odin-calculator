@@ -30,5 +30,5 @@
 
     border-right: var(--calculator-border-size) solid #80808073;
     border-bottom: var(--calculator-border-size) solid gray;
-
+    border-radius: calc(var(--calculator-border-size) / 5);
 }
