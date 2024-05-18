@@ -11,6 +11,9 @@ const testDisplay = new DigitDisplay(NUM_DIGITS_IN_DISPLAY);
 const testKeypad = new Keypad();
 const testCalculator = new Calculator(testDisplay, testKeypad);
 
+window.addEventListener("keyup", (event) => testKeypad.checkKeyupEvent(event));
+window.addEventListener("keydown", (event) => testKeypad.checkKeydownEvent(event));
+
 document.querySelector("body").appendChild(testCalculator.getDiv());
 
 async function demoDisplay() {

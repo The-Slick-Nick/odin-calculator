@@ -17,26 +17,44 @@ class KeypadButton {
         this.buttonElem.classList.add("keypad-button");
         this.buttonElem.textContent = key;
 
-        this.buttonElem.addEventListener( "click", (event) => this._callback(this._key) );
+        this.buttonElem.addEventListener( "click", (event) => {
+            this.buttonRelease();
+            this.buttonFire();
+        });
 
         this.buttonElem.addEventListener("mousedown", (event) => {
-            this.buttonElem.classList.add("keypad-button-pressed");
+            this.buttonPress();
         });
 
         this.buttonElem.addEventListener("mouseup", (event) => {
-            this.buttonElem.classList.remove("keypad-button-pressed");
+            this.buttonRelease();
         });
 
         this.buttonElem.addEventListener("mouseout", (event) => {
-            this.buttonElem.classList.remove("keypad-button-pressed");
+            this.buttonRelease();
         });
+    }
+
+    buttonPress() {
+        this.buttonElem.classList.add("keypad-button-pressed");
+    }
+
+    buttonRelease() {
+        this.buttonElem.classList.remove("keypad-button-pressed");
+    }
+
+    buttonFire() {
+        this._callback(this._key);
+    }
+
+    getKeyChar() {
+        return this._key;
     }
 
     getButton() {
         /* Return the DOM button element this class represents */
         return this.buttonElem;
     }
-
 }
 
 
@@ -44,7 +62,20 @@ const all_keys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '-', '*
 
 class Keypad {
 
-    /* Class representing ... & wrapping KeypadButtons */
+    /* Class representing ... & wrapping KeypadButtons
+     * 
+     * Keypresses from KeypadButton objects bubble up to the emit() method,
+     * which sends a keypress signal (as a string, mostly single character) to 
+     * any subscriber callbacks.
+     *
+     * Note that each individual button handles its own click events, but
+     * keyboard events are handled by the Keypad first, then passed to
+     * the appropriate button to emit its signal.
+     * This back and forth seems excessive, but is done in order to ensure
+     * keypresses are always listened to and can have the visual button feedback
+     * on the screen.
+     * */
+
     constructor() {
 
         this._outerContainer = document.createElement("div");
@@ -52,6 +83,7 @@ class Keypad {
 
         this.subscribers = [];
 
+        this._keys = {};
 
         /* [C] [/]|[*] [-]
          * [7] [8]|[9] [ ]
@@ -103,6 +135,8 @@ class Keypad {
                     newButton.getButton().classList.add("small-button");
                 }
                 newRow.appendChild(newButton.getButton());
+                this._keys[keyChar] = newButton;
+
             });
             rowSection.appendChild(newRow);
         });
@@ -124,19 +158,30 @@ class Keypad {
                     newButton.getButton().classList.add("small-button");
                 }
                 newCol.appendChild(newButton.getButton());
+                this._keys[keyChar] = newButton;
+
             });
             columnSection.appendChild(newCol);
         });
+
+        // Some key mapping/remapping - if I need more I'll do something more structured later
+        this._keys["Enter"] = this._keys["="];
+
+
         this._outerContainer.appendChild(columnSection);
+    }
 
-        /* all_keys.forEach((keyChar) => {
-            let newButton = new KeypadButton(
-                keyChar,
-                (key) => this.emit(key)
-            );
-            this._outerContainer.appendChild(newButton.getButton());
-        }); */
+    checkKeydownEvent(keydownEvent) {
+        if (keydownEvent.key in this._keys) {
+            this._keys[keydownEvent.key].buttonPress();
+        }
+    }
 
+    checkKeyupEvent(keyupEvent) {
+        if (keyupEvent.key in this._keys) {
+            this._keys[keyupEvent.key].buttonRelease();
+            this._keys[keyupEvent.key].buttonFire();
+        }
     }
 
     getDiv() {
