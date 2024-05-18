@@ -158,7 +158,6 @@ const charMasks = {
 }
 
 
-
 class DigitDiv {
     /* A class that wraps & represents a digit display box */
     constructor() {
@@ -181,17 +180,60 @@ class DigitDiv {
 
             let cellNum;  // total cell count
             for (let colNum = 0; colNum < 3; colNum++) {
+                cellNum = (3 * rowNum) + colNum;
+
                 let digCell = document.createElement("div");
                 digCell.classList.add("digit-cell");
                 digCell.classList.add(`col-${colNum}`);
-                digCell.classList.add(
-                    (colNum % 2 === 0) ? "width-low" : "width-high"
-                );
 
-                cellNum = (3 * rowNum) + colNum;
+                // colNum odd => horizontal
+                // colNum even => vertical
+                digCell.classList.add((colNum % 2 === 0) ? "width-low" : "width-high");
+
                 if (cellNum % 2 !== 0) {
-                    this.lightableCells.push(digCell);
+                    /* container cell */
+
+                    // vertical or horizontal?
+                    if (colNum % 2 === 0) {
+                        digCell.classList.add("lightable-cell-vertical");
+
+                        let topEnd = document.createElement("div");
+                        topEnd.classList.add("cell-end-top");
+
+                        let middle = document.createElement("div");
+                        middle.classList.add("cell-middle-vertical");
+
+                        let bottomEnd = document.createElement("div");
+                        bottomEnd.classList.add("cell-end-bottom");
+
+                        digCell.appendChild(topEnd);
+                        digCell.appendChild(middle);
+                        digCell.appendChild(bottomEnd);
+
+                        this.lightableCells.push([topEnd, middle, bottomEnd]);
+
+                    }
+                    else {
+                        digCell.classList.add("lightable-cell-horizontal");
+
+                        let leftEnd = document.createElement("div");
+                        leftEnd.classList.add("cell-end-left");
+
+                        let middle = document.createElement("div");
+                        middle.classList.add("cell-middle-horizontal");
+                        let rightEnd = document.createElement("div");
+                        rightEnd.classList.add("cell-end-right");
+
+                        digCell.appendChild(leftEnd);
+                        digCell.appendChild(middle);
+                        digCell.appendChild(rightEnd);
+
+                        this.lightableCells.push([leftEnd, middle, rightEnd]);
+                    }
+
+                    // this.lightableCells.push(digCell);
                 }
+
                 digRow.appendChild(digCell);
             }
             this.outerContainer.appendChild(digRow);
@@ -210,10 +252,14 @@ class DigitDiv {
         for (let digitIdx = 0; digitIdx < 7; digitIdx++) {
 
             if (((1 << digitIdx) & digitMasks[digit]) > 0) {  // This bar should light up
-                this.lightableCells[digitIdx].classList.add("digit-lit");
+                this.lightableCells[digitIdx].forEach((component) => {
+                    component.classList.add("digit-lit");
+                });
             }
             else {
-                this.lightableCells[digitIdx].classList.remove("digit-lit");
+                this.lightableCells[digitIdx].forEach((component) => {
+                    component.classList.remove("digit-lit");
+                });
             }
         }
     }
@@ -227,19 +273,26 @@ class DigitDiv {
 
         for (let digitIdx = 0; digitIdx < 7; digitIdx++) {
             if (((1 << digitIdx) & charMasks[char]) > 0) {
-                this.lightableCells[digitIdx].classList.add("digit-lit");
+                this.lightableCells[digitIdx].forEach((component) => {
+                    component.classList.add("digit-lit");
+                });
             }
             else {
-                this.lightableCells[digitIdx].classList.remove("digit-lit");
+                this.lightableCells[digitIdx].forEach((component) => {
+                    component.classList.remove("digit-lit");
+                });
             }
         }
     }
 
     clear() {
         /* clear display, showing no digit whatsoever */
-        for (let digCell of this.lightableCells) {
-            digCell.classList.remove("digit-lit");
-        }
+
+        this.lightableCells.forEach((container) => {
+            container.forEach((component) => {
+                component.classList.remove("digit-lit");
+                });
+        });
     }
 
 }

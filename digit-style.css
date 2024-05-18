@@ -45,4 +45,25 @@
 
 .digit-lit {
     background-color: red;
+    border-color: red;
 }
+
+.lightable-cell-vertical {
+    display: flex;
+    flex-direction: column;
+}
+
+.lightable-cell-horizontal {
+    display: flex;
+    flex-direction: row;
+}
+
+.cell-end-left,
+.cell-middle-horizontal,
+.cell-end-right,
+.cell-end-top,
+.cell-middle-vertical,
+.cell-end-bottom {
+    flex: 1;
+}
+
