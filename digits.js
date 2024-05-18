@@ -154,6 +154,16 @@ const charMasks = {
         | BOTTOM_LEFT_VERTICAL_BIT
         // | BOTTOM_RIGHT_VERTICAL_BIT
         // | BOTTOM_HORIZONTAL_BIT
+        | 0,
+
+    '-': 0
+        // | TOP_HORIZONTAL_BIT
+        // | TOP_LEFT_VERTICAL_BIT
+        // | TOP_RIGHT_VERTICAL_BIT
+        | MIDDLE_HORIZONTAL_BIT
+        // | BOTTOM_LEFT_VERTICAL_BIT
+        // | BOTTOM_RIGHT_VERTICAL_BIT
+        // | BOTTOM_HORIZONTAL_BIT
         | 0
 }
 
@@ -299,15 +309,18 @@ class DigitDiv {
 
 class DigitDisplay {
     /* Represents a full-length digit display, managing individual DigitDiv objects
-     * For now, can ONLY represent positive numbers (but I will support this later) */
+     * 
+     * Can represent integers - floating point values are rounded to the nearest 
+     * integer
+     */
 
     constructor(numDigits) {
-        if (+numDigits <= 0) {
-            throw new Error("DigitDisplay requires at least one digit");
+        if (+numDigits <= 3) {
+            throw new Error("DigitDisplay requires at least three digits");
         }
 
         this.maxNumber = (10 ** numDigits) - 1;
-        this.minNumber = 0;  // TODO: Support negative numbers
+        this.minNumber = -1 * ((10 ** (numDigits - 1)) - 1);
 
         // low index - high digit. (left to right is high digit to low digit)
         this.digits = [];
@@ -315,7 +328,7 @@ class DigitDisplay {
         this.outerContainer.classList.add("digit-display");
 
 
-        // note: I'm not a fan of directly setting the css here but perhaps it's best here?
+        // note: I'm not normally a fan of directly setting the css here but perhaps it's best here?
         this.outerContainer.style.display = "flex";
         this.outerContainer.style["flex-flow"] = "row nowrap";
 
@@ -354,20 +367,31 @@ class DigitDisplay {
             return;
         }
 
+        let isNegative = false;
+        if (number < 0) {
+            isNegative = true;
+            number *= -1;
+        }
+
         let factor = 0;
         let digit;
-        for (let digitDivIdx = this.digits.length - 1; digitDivIdx >= 0; digitDivIdx--) {
-
-            if (number <= 0) {
-                this.digits[digitDivIdx].clear();
-                continue;
-            }
+        let digitDivIdx;
+        for (digitDivIdx = this.digits.length - 1; digitDivIdx >= 0 && number > 0; digitDivIdx--) {
 
             digit = (number % (10 ** (factor + 1))) / (10 ** factor);
             this.digits[digitDivIdx].representDigit(digit);
             number -= (10 ** factor) * digit;
 
             factor++;
+        }
+
+        if (isNegative) {
+            this.digits[digitDivIdx].representChar("-");
+            digitDivIdx--;
+        }
+
+        for (; digitDivIdx >= 0; digitDivIdx--) {
+            this.digits[digitDivIdx].clear();
         }
     }
 
