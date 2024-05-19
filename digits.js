@@ -202,8 +202,23 @@ function integerFloatRepresentation(num, digitLimit) {
      * i.e. integerFloatRepresentation(12.34, 8) would yield
      * [1234, 2]
      */
-    return [0, 0];
 
+    if (num < 0) {
+        num *= -1;
+    }
+
+    let integralDigits = numSignificantNondecimalDigits(num);
+    let maxDecimal = digitLimit - integralDigits;
+    num = Math.trunc(num * (10 ** maxDecimal));
+
+    let numDecimal = maxDecimal;
+    // count leading zeroes
+    for (let i = 0; i < maxDecimal && num % 10 === 0; i++) {
+        num /= 10;
+        numDecimal--;
+    }
+
+    return [num, numDecimal];
 }
 
 class DecimalDiv {
