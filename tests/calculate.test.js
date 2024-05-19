@@ -18,6 +18,10 @@ test("Strings convert", () => {
     expect(calculate('1', '+', '2')).toEqual(3);
 });
 
+test("Can divide integers into floats", () => {
+    expect(calculate('3', '/', '2')).toEqual(1.5);
+});
+
 
 // Subtraction
 test("Subtracts integers", () => {

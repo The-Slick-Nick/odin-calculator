@@ -212,7 +212,8 @@ function integerFloatRepresentation(num, digitLimit) {
     num = Math.trunc(num * (10 ** maxDecimal));
 
     let numDecimal = maxDecimal;
-    // count leading zeroes
+
+    // clip leading zeroes
     for (let i = 0; i < maxDecimal && num % 10 === 0; i++) {
         num /= 10;
         numDecimal--;
@@ -414,6 +415,7 @@ class DigitDisplay {
             throw new Error("DigitDisplay requires at least three digits");
         }
 
+        this._numDigits = numDigits;
         this.maxNumber = (10 ** numDigits) - 1;
         this.minNumber = -1 * ((10 ** (numDigits - 1)) - 1);
 
@@ -465,42 +467,6 @@ class DigitDisplay {
             number *= -1;
         }
 
-        /* ------------------------------ */
-        /* CHECK FOR DECIMAL POINT        */
-
-        if (Math.floor(number) !== number) {
-            // how many significant digits?
-            // split into two portions - 
-            // nondecimal & decimal - to determine how many
-            // of the float's significant figures to represent
-        
-            // TODO: Write separate helper functions (in this file, but not under this class)
-            // to provide some of the functionality here - this way, I can unit test them
-            //
-            //
-            // Writing this down now lest I forget
-            // (1) Subtract the number of integral digits
-            //     from the number of total digits supported
-            //     by the display
-            //  12.34 => 8 - 2 = 6
-            // (2) Multiply number by 10 to power of number
-            //     from (1) & keep only the integral portion
-            //  12.34 * (10 ^ 6) = 12340000
-            // (3) Count the number of zeroes on the "right end"
-            //     UP TO the number identified in (1)
-            //  12340000 => 4
-            // (4) Take the original number and multiply
-            //     by 10 to the power of the number from (1)
-            //     minus the number from (3)
-            // 12.34 * (10 ^ (6 - 4)) = 1234
-            // (5) Represent the integral portion of this
-            //     number on the display.
-            // (6) Represent the nth decimal on the display 
-            //     (from the right) where n is the number
-            //     from (1) minus the number from (3)
-            //  []1[]2[.]3[]4
-        }
-        /* ------------------------------ */
 
         // edge case - standard logic clears when number is 0
         if (0 === number) {
@@ -511,15 +477,16 @@ class DigitDisplay {
             return;
         }
 
+        let [integerRep, decimalNum] = integerFloatRepresentation(number, this._numDigits);
 
         let factor = 0;
         let digit;
         let digitDivIdx;
-        for (digitDivIdx = this.digits.length - 1; digitDivIdx >= 0 && number > 0; digitDivIdx--) {
+        for (digitDivIdx = this.digits.length - 1; digitDivIdx >= 0 && integerRep > 0; digitDivIdx--) {
 
-            digit = (number % (10 ** (factor + 1))) / (10 ** factor);
+            digit = (integerRep % (10 ** (factor + 1))) / (10 ** factor);
             this.digits[digitDivIdx].representDigit(digit);
-            number -= (10 ** factor) * digit;
+            integerRep -= (10 ** factor) * digit;
 
             factor++;
         }
