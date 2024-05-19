@@ -66,8 +66,25 @@ test("Only decimal portion", () => {
 test("Negative number", () => {
     // ignore the negative portion
     let [integer, decimalPlaces] = integerFloatRepresentation(-12.34, 10);
-    expect(integer).toEqual(1234);
+    expect(integer).toEqual(-1234);
     expect(decimalPlaces).toEqual(2);
-
 });
 
+test("Leading zero with truncating decimals", () => {
+    let [integer, decimalPlaces] = integerFloatRepresentation(0.12345, 3);
+    expect(integer).toEqual(12);
+    expect(decimalPlaces).toEqual(2);
+});
+
+test("Negative leading zero with truncating decimals", () => {
+    let [integer, decimalPlaces] = integerFloatRepresentation(-0.12345, 4);
+    // both the - sign and the leading 0 require a full digit slot
+    expect(integer).toEqual(-12);
+    expect(decimalPlaces).toEqual(2);
+});
+
+test("Negative leading zero without truncating decimals", () => {
+    let [integer, decimalPlaces] = integerFloatRepresentation(-0.028571, 8);
+    expect(integer).toEqual(-28571);
+    expect(decimalPlaces).toEqual(6);
+});

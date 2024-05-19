@@ -202,9 +202,11 @@ function integerFloatRepresentation(num, digitLimit) {
      * i.e. integerFloatRepresentation(12.34, 8) would yield
      * [1234, 2]
      */
-
+    let isNegative = false;
     if (num < 0) {
         num *= -1;
+        isNegative = true;
+        digitLimit--;
     }
 
     let integralDigits = numSignificantNondecimalDigits(num);
@@ -219,7 +221,7 @@ function integerFloatRepresentation(num, digitLimit) {
         numDecimal--;
     }
 
-    return [num, numDecimal];
+    return [(isNegative ? -1 : 1) * num, numDecimal];
 }
 
 class DecimalDiv {
@@ -461,14 +463,8 @@ class DigitDisplay {
             )
         }
 
-        let isNegative = false;
-        if (number < 0) {
-            isNegative = true;
-            number *= -1;
-        }
-
-
         // edge case - standard logic clears when number is 0
+        /*
         if (0 === number) {
             this.digits[this.digits.length - 1].representDigit(0);
             for (let digitDivIdx = this.digits.length - 2; digitDivIdx >= 0; digitDivIdx--) {
@@ -478,10 +474,17 @@ class DigitDisplay {
             this.decimals.forEach((decimalObj) => decimalObj.clear());
             return;
         }
+        */
 
         let [integerRep, numDecimalPlaces] = integerFloatRepresentation(
             number, this._numDigits
         );
+
+        let isNegative = false;
+        if (integerRep < 0) {
+            integerRep *= -1;
+            isNegative = true;
+        }
 
         /* show the decimal point */
         this.decimals.forEach((decimalObj) => decimalObj.clear());
@@ -500,6 +503,12 @@ class DigitDisplay {
             integerRep -= (10 ** factor) * digit;
 
             factor++;
+        }
+
+        /* show the padding zeroes after a decimal point */
+        while (this.digits.length - digitDivIdx - 1 <= numDecimalPlaces) {
+            this.digits[digitDivIdx].representDigit(0);
+            digitDivIdx--;
         }
 
         /* show the negative sign */
