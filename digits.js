@@ -412,6 +412,10 @@ class DigitDisplay {
      * integer
      */
 
+    /** 
+     * Initialize a DigitDisplay object
+     * @param numDigits {integer} - The number of digits to show on the display. Minimum of 3.
+     */
     constructor(numDigits) {
         if (+numDigits <= 3) {
             throw new Error("DigitDisplay requires at least three digits");
@@ -450,6 +454,10 @@ class DigitDisplay {
         return this.outerContainer;
     }
 
+    /**
+     * Represent the provided number on the display
+     * @param number {number} - Number to display
+     */
     representNumber(number) {
         if (isNaN(+number)) {
             throw new Error(`Cannot represent ${number} as a number`);
@@ -462,19 +470,6 @@ class DigitDisplay {
                 + `Got ${number}`
             )
         }
-
-        // edge case - standard logic clears when number is 0
-        /*
-        if (0 === number) {
-            this.digits[this.digits.length - 1].representDigit(0);
-            for (let digitDivIdx = this.digits.length - 2; digitDivIdx >= 0; digitDivIdx--) {
-                this.digits[digitDivIdx].clear();
-            }
-
-            this.decimals.forEach((decimalObj) => decimalObj.clear());
-            return;
-        }
-        */
 
         let [integerRep, numDecimalPlaces] = integerFloatRepresentation(
             number, this._numDigits
@@ -523,6 +518,12 @@ class DigitDisplay {
         }
     }
 
+    /**
+     * Represent the provided text on the display
+     * @param text {string} - Text to display. If it contains
+     *     a character the display is incapable of displaying,
+     *     an error is raised.
+     */
     representWord(text) {
         text = String(text);
 
