@@ -40,6 +40,8 @@ class Calculator {
         this.display = digitDisplay;
         this.keypad = keypad;
 
+        this.parsingDecimal = false;
+
         /* "plug in" to the keypad */
         this.keypad.subscribe((key) => this.parseKey(key));
 
@@ -122,6 +124,11 @@ class Calculator {
             }
             else if (STATE_PARSING_OP2 === this.state) {
                 this.operand2 *= -1;
+            }
+        }
+        else if ('.' === keyPressed) {
+            if (STATE_PARSING_OP1 === this.state || STATE_PARSING_OP2 === this.state) {
+                this.parsingDecimal = true;
             }
         }
 
