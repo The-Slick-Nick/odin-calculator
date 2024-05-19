@@ -17,7 +17,7 @@ function calculate(operand1, operator, operand2) {
         case '*':
             return operand1 * operand2;
         case '/':
-            return Math.round(operand1 / operand2);
+            return operand1 / operand2;
         default:
             throw new Error(`Invalid operator ${operator}`);
     }
