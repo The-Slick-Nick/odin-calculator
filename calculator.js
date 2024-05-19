@@ -40,7 +40,9 @@ class Calculator {
         this.display = digitDisplay;
         this.keypad = keypad;
 
+        /* decimal point parsing considerations */
         this.parsingDecimal = false;
+        this.appendFactor = 0  // 10 ^ x
 
         /* "plug in" to the keypad */
         this.keypad.subscribe((key) => this.parseKey(key));
@@ -79,16 +81,33 @@ class Calculator {
             ) {
                 this.operand1 = 0;
                 this.state = STATE_PARSING_OP1;
+                this.parsingDecimal = false;
+                this.appendFactor = 0;
             }
             else if (STATE_OPERATOR_PRESSED === this.state) {
                 this.state = STATE_PARSING_OP2;
+                this.parsingDecimal = false;
+                this.appendFactor = 0;
             }
 
+
             if (STATE_PARSING_OP1 === this.state) {
-                this.operand1 = (this.operand1 * 10) + digit;
+                if (this.parsingDecimal) {
+                    this.operand1 += digit * (10 ** this.appendFactor);
+                    this.appendFactor--;
+                }
+                else {
+                    this.operand1 = (this.operand1 * 10) + digit;
+                }
             }
             else if (STATE_PARSING_OP2 === this.state) {
-                this.operand2 = (this.operand2 * 10) + digit;
+                if (this.parsingDecimal) {
+                    this.operand2 += digit * (10 ** this.appendFactor);
+                    this.appendFactor--;
+                }
+                else {
+                    this.operand2 = (this.operand2 * 10) + digit;
+                }
             }
 
         }
@@ -116,6 +135,8 @@ class Calculator {
         else if ('C' === keyPressed) {
             this.operand1 = 0;
             this.state = STATE_PARSING_OP1;
+            this.parsingDecimal = false;
+            this.appendFactor = 0;
         }
         // maybe I'm beginning to need a switch here instead...
         else if ('+/-' === keyPressed) {
@@ -126,9 +147,10 @@ class Calculator {
                 this.operand2 *= -1;
             }
         }
-        else if ('.' === keyPressed) {
+        else if ('.' === keyPressed && !this.parsingDecimal) {
             if (STATE_PARSING_OP1 === this.state || STATE_PARSING_OP2 === this.state) {
                 this.parsingDecimal = true;
+                this.appendFactor = -1;
             }
         }
 
