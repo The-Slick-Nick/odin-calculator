@@ -6,12 +6,16 @@
 class KeypadButton {
 
     /**
-     * :param: {string} key
-     * :param: {function} callback
+     * Initialize a KeypadButton object, representing a single key in a keypad
+     * @param audioDoms {audio DoM object} - Rest argument providing DoM elements to play upon a keypress
+     * @param key {string}
+     * @param callback {function}
      */
-    constructor(key, callback) {
+    constructor(key, callback, ...audioDoms) {
         this._callback = callback;
         this._key = key;
+
+        this._keyAudio = audioDoms;
 
         this.buttonElem = document.createElement("button");
         this.buttonElem.classList.add("keypad-button");
@@ -37,6 +41,9 @@ class KeypadButton {
 
     buttonPress() {
         this.buttonElem.classList.add("keypad-button-pressed");
+
+        const idx = Math.floor(Math.random() * this._keyAudio.length);
+        this._keyAudio[idx].play();
     }
 
     buttonRelease() {
@@ -47,12 +54,13 @@ class KeypadButton {
         this._callback(this._key);
     }
 
+    /* Return the key string this button represents */
     getKeyChar() {
         return this._key;
     }
 
+    /* Return the DOM button element this class represents */
     getButton() {
-        /* Return the DOM button element this class represents */
         return this.buttonElem;
     }
 }
@@ -76,7 +84,12 @@ class Keypad {
      * on the screen.
      * */
 
-    constructor() {
+    /**
+     * Initialize a Keypad object
+     *
+     * @param audioDoms - Rest argument providing DoM elements to play upon a keypress
+     */
+    constructor(...audioDoms) {
 
         this._outerContainer = document.createElement("div");
         this._outerContainer.classList.add("keypad");
@@ -127,7 +140,7 @@ class Keypad {
             newRow.classList.add("keypad-button-row");
 
             keyRow.forEach((keyChar) => {
-                let newButton = new KeypadButton(keyChar, (k) => this.emit(k));
+                let newButton = new KeypadButton(keyChar, (k) => this.emit(k), ...audioDoms);
                 if (largeKeys.includes(keyChar)) {
                     newButton.getButton().classList.add("wide-button");
                 }
@@ -151,7 +164,7 @@ class Keypad {
             newCol.classList.add("keypad-button-column");
 
             keyCol.forEach((keyChar) => {
-                let newButton = new KeypadButton(keyChar, (k) => this.emit(k));
+                let newButton = new KeypadButton(keyChar, (k) => this.emit(k), ...audioDoms);
                 if (largeKeys.includes(keyChar)) {
                     newButton.getButton().classList.add("tall-button");
                 }
@@ -185,11 +198,18 @@ class Keypad {
         }
     }
 
+    /**
+     * Return the DOM div element that this class represents
+     */
     getDiv() {
-        /* Return the DOM div element that this class represents */
         return this._outerContainer;
     }
 
+    /**
+     * Emit a key signal to all subscribers
+     * @param key {string} - String (often one character) of key
+     *                       code to emit
+     */
     emit(key) {
         /* Emit a keypress code to all subscriber callbacks */
         this.subscribers.forEach((subscriber) => {
@@ -197,6 +217,10 @@ class Keypad {
         });
     }
 
+    /**
+     * Add a function to the keypad's list off callbacks
+     * @param callback {function} - A function accepting a single "key"
+     */
     subscribe(callback) {
         /* Add a callback to the subscriber list
          *

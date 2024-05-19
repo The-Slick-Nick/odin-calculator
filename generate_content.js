@@ -2,35 +2,23 @@
  * 
  * This file/script is meant to run any/all DOM-generating javascript
  */
-let NUM_DIGITS_IN_DISPLAY = 8;
+const NUM_DIGITS_IN_DISPLAY = 8;
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-const testDisplay = new DigitDisplay(NUM_DIGITS_IN_DISPLAY);
-const testKeypad = new Keypad();
-const testCalculator = new Calculator(testDisplay, testKeypad);
+const audioDoms = [
+    document.querySelector("#audio1"),
+    document.querySelector("#audio2"),
+    document.querySelector("#audio3")
+];
 
-window.addEventListener("keyup", (event) => testKeypad.checkKeyupEvent(event));
-window.addEventListener("keydown", (event) => testKeypad.checkKeydownEvent(event));
 
-document.querySelector("body").appendChild(testCalculator.getDiv());
+const display = new DigitDisplay(NUM_DIGITS_IN_DISPLAY);
+const keypad = new Keypad(...audioDoms);
+const calculator = new Calculator(testDisplay, testKeypad);
 
-async function demoDisplay() {
-    for (let num = 0; num <= 100; num++) {
-        await sleep(10);
-        testDisplay.representNumber(num);
-    }
-    testDisplay.representWord("Err");
-} 
+window.addEventListener("keyup", (event) => keypad.checkKeyupEvent(event));
+window.addEventListener("keydown", (event) => keypad.checkKeydownEvent(event));
+
+document.querySelector("body").appendChild(calculator.getDiv());
 
 document.documentElement.style.setProperty("--num-digits", NUM_DIGITS_IN_DISPLAY);
 
-// If I ever need to test display things with the decimal points - uncomment below
-/*
-for (let i = 0; i < testDisplay.decimals.length / 2; i++) {
-    testDisplay.decimals[i].representDecimal();
-}
-
-*/
-    
