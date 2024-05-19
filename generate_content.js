@@ -13,7 +13,7 @@ const audioDoms = [
 
 const display = new DigitDisplay(NUM_DIGITS_IN_DISPLAY);
 const keypad = new Keypad(...audioDoms);
-const calculator = new Calculator(testDisplay, testKeypad);
+const calculator = new Calculator(display, keypad);
 
 window.addEventListener("keyup", (event) => keypad.checkKeyupEvent(event));
 window.addEventListener("keydown", (event) => keypad.checkKeydownEvent(event));

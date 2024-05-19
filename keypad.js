@@ -112,8 +112,7 @@ class Keypad {
          * columns
          */
 
-
-        // define five rows
+        // rows
         let blueprint1 = [
             ["C", "/"],
             ["7", "8"],
@@ -122,7 +121,7 @@ class Keypad {
             ["0"]
         ]
 
-        // define two columns
+        // columns
         let blueprint2 = [
             ["*", "9", "6", "3", "."],
             ["-", "+", "+/-", "="]
@@ -211,7 +210,6 @@ class Keypad {
      *                       code to emit
      */
     emit(key) {
-        /* Emit a keypress code to all subscriber callbacks */
         this.subscribers.forEach((subscriber) => {
             subscriber(key);
         });
@@ -222,12 +220,7 @@ class Keypad {
      * @param callback {function} - A function accepting a single "key"
      */
     subscribe(callback) {
-        /* Add a callback to the subscriber list
-         *
-         * The callback should accept a single "char" argument
-         */
         this.subscribers.push(callback);
-        console.log("Now we have subscribed");
     }
 }
 
