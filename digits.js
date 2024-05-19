@@ -474,11 +474,22 @@ class DigitDisplay {
             for (let digitDivIdx = this.digits.length - 2; digitDivIdx >= 0; digitDivIdx--) {
                 this.digits[digitDivIdx].clear();
             }
+
+            this.decimals.forEach((decimalObj) => decimalObj.clear());
             return;
         }
 
-        let [integerRep, decimalNum] = integerFloatRepresentation(number, this._numDigits);
+        let [integerRep, numDecimalPlaces] = integerFloatRepresentation(
+            number, this._numDigits
+        );
 
+        /* show the decimal point */
+        this.decimals.forEach((decimalObj) => decimalObj.clear());
+        if (numDecimalPlaces > 0) {
+            this.decimals[this._numDigits - numDecimalPlaces].representDecimal();
+        }
+
+        /* show the number */
         let factor = 0;
         let digit;
         let digitDivIdx;
@@ -491,11 +502,13 @@ class DigitDisplay {
             factor++;
         }
 
+        /* show the negative sign */
         if (isNegative) {
             this.digits[digitDivIdx].representChar("-");
             digitDivIdx--;
         }
 
+        /* clear remaining digits */
         for (; digitDivIdx >= 0; digitDivIdx--) {
             this.digits[digitDivIdx].clear();
         }
