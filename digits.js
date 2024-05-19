@@ -168,22 +168,43 @@ const charMasks = {
 }
 
 
-function numSignificantNondecimalDigits(float) {
+function numSignificantNondecimalDigits(num) {
     /* Identify the number of digits required to
      * represent the number of integer digits in a number
      * (left of the decimal point)
      */
-    return 0;
+
+    if (num < 0) {
+        num *= -1;
+    }
+
+    let numDigits = 0;
+
+    do {
+        num = Math.floor(num / 10);
+        numDigits++;
+    } while (num > 0);
+
+    return numDigits;
 }
 
-function numSignificantDecimalDigits(float) {
-    /* Identify and return the number of digits required
-     * to represent the number of fractional digits in
-     * a number (right of the decimal point)
+function integerFloatRepresentation(num, digitLimit) {
+    /* Return the best representation of `num` within
+     * digitlimit
+     *
+     * Returns a two-sized array in the form 
+     * [ integerToRepresent, numDecimalPlaces ]
+     *
+     * Where integerToRepresent is the integer represention
+     * of a number to print, and numDecimalPlaces is the
+     * number of places (from the right) to place the decima.
+     *
+     * i.e. integerFloatRepresentation(12.34, 8) would yield
+     * [1234, 2]
      */
-    return 0;
-}
+    return [0, 0];
 
+}
 
 class DecimalDiv {
     /* A class that wraps & represents a decimal point 
@@ -440,6 +461,29 @@ class DigitDisplay {
         
             // TODO: Write separate helper functions (in this file, but not under this class)
             // to provide some of the functionality here - this way, I can unit test them
+            //
+            //
+            // Writing this down now lest I forget
+            // (1) Subtract the number of integral digits
+            //     from the number of total digits supported
+            //     by the display
+            //  12.34 => 8 - 2 = 6
+            // (2) Multiply number by 10 to power of number
+            //     from (1) & keep only the integral portion
+            //  12.34 * (10 ^ 6) = 12340000
+            // (3) Count the number of zeroes on the "right end"
+            //     UP TO the number identified in (1)
+            //  12340000 => 4
+            // (4) Take the original number and multiply
+            //     by 10 to the power of the number from (1)
+            //     minus the number from (3)
+            // 12.34 * (10 ^ (6 - 4)) = 1234
+            // (5) Represent the integral portion of this
+            //     number on the display.
+            // (6) Represent the nth decimal on the display 
+            //     (from the right) where n is the number
+            //     from (1) minus the number from (3)
+            //  []1[]2[.]3[]4
         }
         /* ------------------------------ */
 
@@ -509,7 +553,6 @@ class DigitDisplay {
 try {
     module.exports = {
         numSignificantNondecimalDigits,
-        numSignificantDecimalDigits
+        integerFloatRepresentation
     }
 } catch {}
-

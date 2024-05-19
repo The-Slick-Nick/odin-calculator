@@ -1,6 +1,6 @@
 const {
     numSignificantNondecimalDigits,
-    numSignificantDecimalDigits
+    integerFloatRepresentation
 } = require("../digits.js"); 
 
 /* Nondecimal Digits */
@@ -25,33 +25,49 @@ test("Zero", () => {
 });
 
 test("0 < n < 1", () => {
-    expect(numSignificantNondecimalDigits(0.12)).toEqual(0);
+    expect(numSignificantNondecimalDigits(0.12)).toEqual(1);
 });
 
 
-/* Decimal Digits */
-test("Single decimal", () => {
-    expect(numSignificantDecimalDigits(1.1)).toEqual(1);
+
+/* integerFloatRepresentation */
+test("Single digit", () => {
+    let [integer, decimalPlaces] = integerFloatRepresentation(12.3, 10);
+    expect(integer).toEqual(123);
+    expect(decimalPlaces).toEqual(1);
 });
 
 test("No decimal", () => {
-    expect(numSignificantDecimalDigits(14)).toEqual(0);
-});
-
-test("Multiple decimal", () => {
-    expect(numSignificantDecimalDigits(1.2345)).toEqual(4);
-});
-
-test("Negative decimal", () => {
-    expect(numSignificantDecimalDigits(-5.6789)).toEqual(4);
-});
-
-test("Zero nondecimal", () => {
-    expect(numSignificantDecimalDigits(0.14)).toEqual(2);
+    let [integer, decimalPlaces] = integerFloatRepresentation(3, 10);
+    expect(integer).toEqual(3);
+    expect(decimalPlaces).toEqual(0);
 });
 
 test("Trailing zeroes", () => {
-    expect(numSignificantDecimalDigits(1.234000)).toEqual(3);
+    let [integer, decimalPlaces] = integerFloatRepresentation(100, 10);
+    expect(integer).toEqual(100);
+    expect(decimalPlaces).toEqual(0);
 });
 
+test("Truncate to limit", () => {
+
+    let [integer, decimalPlaces] = integerFloatRepresentation(123.456789, 5);
+    expect(integer).toEqual(12345);
+    expect(decimalPlaces).toEqual(2);
+});
+
+test("Only decimal portion", () => {
+
+    let [integer, decimalPlaces] = integerFloatRepresentation(0.123, 10);
+    expect(integer).toEqual(123);
+    expect(decimalPlaces).toEqual(3);
+});
+
+test("Negative number", () => {
+    // ignore the negative portion
+    let [integer, decimalPlaces] = integerFloatRepresentation(-12.34, 10);
+    expect(integer).toEqual(1234);
+    expect(decimalPlaces).toEqual(2);
+
+});
 
