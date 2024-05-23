@@ -5,6 +5,7 @@
 const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 const operators = ['+', '-', '*', '/'];
 
+
 function calculate(operand1, operator, operand2) {
     operand1 = +operand1;
     operand2 = +operand2;
@@ -23,7 +24,6 @@ function calculate(operand1, operator, operand2) {
     }
 }
 
-
 /* Calculator constants */
 STATE_PARSING_OP1 = 0;
 STATE_PARSING_OP2 = 1;
@@ -31,9 +31,10 @@ STATE_EQUALS_PRESSED = 2;
 STATE_OPERATOR_PRESSED = 3;
 STATE_ERROR = 4;
 
+
 class Calculator {
-/* Class that handles the internal calculations and ties together
- * the individual calculator components */
+    /* Class that handles the internal calculations and ties together
+     * the individual calculator components */
 
     constructor(digitDisplay, keypad) {
 
@@ -155,7 +156,7 @@ class Calculator {
         }
 
         if (
-               this.operand1 < this.display.minNumber || this.operand1 > this.display.maxNumber
+            this.operand1 < this.display.minNumber || this.operand1 > this.display.maxNumber
             || this.operand2 < this.display.minNumber || this.operand2 > this.display.maxNumber
         ) {
             this.state = STATE_ERROR;
@@ -185,5 +186,5 @@ class Calculator {
 // this makes the unit tests work
 try {
     module.exports = calculate;
-} catch {}
+} catch { }
 

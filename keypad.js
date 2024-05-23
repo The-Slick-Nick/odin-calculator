@@ -80,6 +80,7 @@ class Keypad {
      * keyboard events are handled by the Keypad first, then passed to
      * the appropriate button to emit its signal.
      * This back and forth seems excessive, but is done in order to ensure
+        // define two columns
      * keypresses are always listened to and can have the visual button feedback
      * on the screen.
      * */

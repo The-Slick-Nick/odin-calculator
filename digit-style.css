@@ -3,12 +3,12 @@
  * Stylesheet for details pertaining to the digital display on the calculator
  */
 
-
 :root {
     /* digit-specifics here.
      * Inherit from --digit-display-height and --digit-display-width
      */
-    --num-digits: 3; /* to be overwritten */
+    --num-digits: 3;
+    /* to be overwritten */
 
     --padding-total: calc(0.1 * var(--digit-display-width));
 
@@ -118,7 +118,7 @@
 
 .digit-lit.decimal-left,
 .digit-lit.cell-end-left {
-    border-right: var(--digit-border-size) solid var(--digit-color); 
+    border-right: var(--digit-border-size) solid var(--digit-color);
     border-top: var(--digit-border-size) solid transparent;
     border-left: 0px solid transparent;
     border-bottom: var(--digit-border-size) solid transparent;
@@ -146,4 +146,3 @@
     border-bottom: 0px solid transparent;
 
 }
-
